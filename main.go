@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"notesApp/pkg/store"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -34,11 +35,14 @@ func main() {
 	if err := initDB(); err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 	mux := http.NewServeMux()
-	mux.HandleFunc("/notes", GetAllNotes)
+	mux.HandleFunc("/notes", func(w http.ResponseWriter, r *http.Request) {
+		store.GetAllNotes(db, w, r)
+	})
+	fmt.Println("Сервер запущен!")
 	if err := http.ListenAndServe(":8082", mux); err != nil {
 		log.Println(err)
 		return
 	}
-	fmt.Println("Сервер запущен!")
 }

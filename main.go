@@ -18,17 +18,15 @@ func loadEnv() {
 		log.Println("No .env file found")
 	}
 }
+
 func initDB() error {
-	connStr := fmt.Sprintf("user=postgres password=%s dbname=note sslmode=disable", os.Getenv("mypass"))
-	db, err := sql.Open("postgres", connStr)
+	connStr := fmt.Sprintf("user=postgres password=%s dbname=notes sslmode=disable", os.Getenv("mypass"))
+	var err error
+	db, err = sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	return db.Ping()
-}
-
-func syaHi(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hi")
 }
 
 func main() {
@@ -37,7 +35,7 @@ func main() {
 		log.Fatal(err)
 	}
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", syaHi)
+	mux.HandleFunc("/notes", GetAllNotes)
 	if err := http.ListenAndServe(":8082", mux); err != nil {
 		log.Println(err)
 		return

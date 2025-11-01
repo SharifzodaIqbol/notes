@@ -8,13 +8,46 @@
         body {
             background-color: #f0f0f0;
             padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .add-form {
+            display: flex;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        .add-form input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .add-form button {
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .note {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
     <h1>{{.PageTitle}}</h1>
+    <form action="/add" method="POST" class="add-form">
+        <input type="text" name="title" placeholder="Заголовок заметки..." required>
+        <input type="text" name="content" placeholder="Текст заметки..." required>
+        <button type="submit">Добавить</button>
+    </form>
         {{range .Notes}}
-        <div style="background: white; padding: 10px; margin: 10px 0;">
+        <div class="note">
             <h3>{{.Title}}</h3>
             <p>{{.Content}}</p>
         </div>

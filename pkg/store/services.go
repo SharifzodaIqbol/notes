@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"html/template"
+	"log"
 	"net/http"
 	"time"
 )
@@ -62,4 +63,17 @@ func GetAllNotes(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl.Execute(w, pageData)
 	w.WriteHeader(http.StatusOK)
+}
+func AddNote(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		title := r.FormValue("title")
+		content := r.FormValue("content")
+		_, err := db.Exec("INSERT INTO notes (title, content) VALUES ($1, $2)", title, content)
+		if err != nil {
+			log.Println(err)
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

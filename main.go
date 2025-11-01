@@ -37,8 +37,11 @@ func main() {
 	}
 	defer db.Close()
 	mux := http.NewServeMux()
-	mux.HandleFunc("/notes", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		store.GetAllNotes(db, w, r)
+	})
+	mux.HandleFunc("/add", func(w http.ResponseWriter, r *http.Request) {
+		store.AddNote(db, w, r)
 	})
 	fmt.Println("Сервер запущен!")
 	if err := http.ListenAndServe(":8082", mux); err != nil {

@@ -43,6 +43,15 @@ func main() {
 	mux.HandleFunc("/add", func(w http.ResponseWriter, r *http.Request) {
 		store.AddNote(db, w, r)
 	})
+	mux.HandleFunc("/edit/", func(w http.ResponseWriter, r *http.Request) {
+		store.EditNote(db, w, r)
+	})
+	mux.HandleFunc("/update/", func(w http.ResponseWriter, r *http.Request) {
+		store.UpdateNote(db, w, r)
+	})
+	mux.HandleFunc("/delete/", func(w http.ResponseWriter, r *http.Request) {
+		store.DeleteNote(db, w, r)
+	})
 	fmt.Println("Сервер запущен!")
 	if err := http.ListenAndServe(":8082", mux); err != nil {
 		log.Println(err)

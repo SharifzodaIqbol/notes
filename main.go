@@ -38,18 +38,18 @@ func main() {
 	defer db.Close()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		store.GetAllNotes(db, w, r)
+		store.FilterByName(db, w, r)
 	})
 	mux.HandleFunc("/add", func(w http.ResponseWriter, r *http.Request) {
 		store.AddNote(db, w, r)
 	})
-	mux.HandleFunc("/edit/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/edit/{id}", func(w http.ResponseWriter, r *http.Request) {
 		store.EditNote(db, w, r)
 	})
-	mux.HandleFunc("/update/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/update/{id}", func(w http.ResponseWriter, r *http.Request) {
 		store.UpdateNote(db, w, r)
 	})
-	mux.HandleFunc("/delete/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/delete/{id}", func(w http.ResponseWriter, r *http.Request) {
 		store.DeleteNote(db, w, r)
 	})
 	fmt.Println("Сервер запущен!")

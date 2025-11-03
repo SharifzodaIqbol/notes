@@ -188,7 +188,7 @@
     
     <div class="filter-container">
         <form action="/" method="GET" class="filter-form">
-            <input type="text" name="filter" placeholder="Фильтрация по названию заметки..." value="">
+            <input type="text" name="filter" id="filter-input" placeholder="Фильтрация по названию заметки..." value="{{.FilterValue}}">
         </form>
     </div>
 
@@ -230,5 +230,35 @@
         </div>
 
     </div>
+    
+    <script>
+        const filterInput = document.getElementById('filter-input');
+        const filterForm = filterInput.closest('form');
+        let timeout = null;
+
+        filterInput.addEventListener('input', function() {
+            clearTimeout(timeout); 
+
+            timeout = setTimeout(function() {
+                filterForm.submit();
+            }, 300);
+
+        });
+
+        filterInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                filterForm.submit(); 
+            }
+        });
+        window.onload = function() {
+        if (filterInput) {
+            filterInput.focus();
+            const length = filterInput.value.length;
+            filterInput.setSelectionRange(length, length);
+        }
+    };
+    </script>
+
 </body>
 </html>
